@@ -1,10 +1,10 @@
 class UrlsController < ApplicationController
   def create
     @url = Url.new(url_params)
-    id = Url.maximum(:id) || 1
+    id = (Url.maximum(:id) || 0) + 1
     @url.short_code = GenerateShortCodeService.new(id).call
     if @url.save
-      render json: @url, status: :created, location: @url
+      render json: @url, status: :created
     else
       render json: @url.errors, status: :unprocessable_entity
     end
