@@ -4,7 +4,7 @@ class UrlsController < ApplicationController
     id = (Url.maximum(:id) || 0) + 1
     @url.short_code = GenerateShortCodeService.new(id).call
     if @url.save
-      render json: @url, status: :created
+      render json: @url.to_json(except: [ :id, :original_url ]), status: :created
     else
       render json: @url.errors, status: :unprocessable_entity
     end
