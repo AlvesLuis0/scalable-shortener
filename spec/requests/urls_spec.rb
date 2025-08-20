@@ -65,4 +65,16 @@ RSpec.describe "/urls", type: :request do
       end
     end
   end
+
+  describe "GET /:short_code" do
+    context "with valid parameters" do
+      it "redirects to the original url" do
+        id = (Url.maximum(:id) || 0) + 1
+        short_code = GenerateShortCodeService.new(id).call
+        url = Url.create!(valid_attributes.merge(short_code: short_code))
+        get short_redirect_url(short_code: url.short_code), headers: valid_headers, as: :json
+        expect(response).to redirect_to(url.original_url)
+      end
+    end
+  end
 end
