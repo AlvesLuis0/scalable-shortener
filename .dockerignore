@@ -45,3 +45,4 @@
 /Dockerfile*
 
 .idea/
+data/
