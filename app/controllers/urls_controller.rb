@@ -12,7 +12,7 @@ class UrlsController < ApplicationController
 
   def redirect_to_original_url
     short_code = params.expect!(:short_code)
-    original_url = Rails.cache.fetch("#{Url.table_name}/#{short_code}/original_url") do
+    original_url = Rails.cache.fetch("#{Url.table_name}/#{short_code}/original_url", expires_in: 12.hours) do
       Url
         .select(:original_url)
         .find_by!(short_code: short_code)
