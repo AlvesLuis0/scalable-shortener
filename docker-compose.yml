@@ -9,3 +9,11 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+
+  cache:
+    container_name: cache
+    image: redis:8.0.3-alpine3.21
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data

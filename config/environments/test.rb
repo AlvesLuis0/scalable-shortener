@@ -53,4 +53,6 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = "localhost"
   Rails.application.routes.default_url_options[:port] = 3000
+
+  config.cache_store = :redis_cache_store, { url: "redis://localhost:6379" }
 end
