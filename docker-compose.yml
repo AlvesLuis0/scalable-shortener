@@ -17,3 +17,24 @@ services:
       - "6379:6379"
     volumes:
       - ./data/redis:/data
+
+  api1:
+    container_name: api1
+    image: alvesluis0/scalable-shortener:latest
+    ports:
+      - "3000:3000"
+    environment:
+      SERVER_HOST: localhost
+      SERVER_PORT: 3000
+      DATABASE_HOST: database
+      CACHE_URL: redis://cache:6379
+      SHORT_CODE_SALT: 1e92b4e6ae973a0755052f260fbeed33bb6f1827b442573bd5ebd2a7a4d9af5ed29428e500477b1685caeaeaa4927e1262bd447fbf6a93fe9a38cffea1945699
+      SECRET_KEY_BASE: 381c390dd9ab945381cd7a78fc62a1eb65ee51116d799edc85301c8bb4aaa44ab6f4ac31f5c660139b1f1c523cec9fd8ed771e3a32cf4e2a084263ce1815be4f
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    depends_on:
+      - database
+      - cache

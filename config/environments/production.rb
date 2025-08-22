@@ -22,10 +22,10 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  config.assume_ssl = false
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -84,4 +84,9 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  Rails.application.routes.default_url_options[:host] = ENV.fetch('SERVER_HOST')
+  Rails.application.routes.default_url_options[:port] = ENV.fetch('SERVER_PORT')
+
+  config.cache_store = :redis_cache_store, { url: ENV.fetch("CACHE_URL", "redis://localhost:6379") }
 end
