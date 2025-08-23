@@ -1,8 +1,8 @@
 class UrlsController < ApplicationController
   def create
     url = Url.new(url_params)
-    id = (Url.maximum(:id) || 0) + 1
-    url.short_code = GenerateShortCodeService.new(id).call
+    url.id = ActiveRecord::Base.connection.select_value("SELECT nextval('urls_id_seq')")
+    url.short_code = GenerateShortCodeService.new(url.id).call
     if url.save
       render json: url.to_json(except: [ :id, :original_url ], methods: :shorted_url), status: :created, location: url
     else
