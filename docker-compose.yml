@@ -65,3 +65,23 @@ services:
       - api2
     deploy:
       <<: *t2_nano_resources
+
+  # for stress tests
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    network_mode: host
+    environment:
+      - INFLUXDB_DB=k6
+
+  grafana:
+    image: grafana/grafana:11.5.2
+    container_name: grafana
+    network_mode: host
+    environment:
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_BASIC_ENABLED: false
+      GF_SERVER_HTTP_PORT: 9000
+    volumes:
+      - ./data/grafana:/etc/grafana/provisioning/
